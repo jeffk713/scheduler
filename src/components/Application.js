@@ -9,7 +9,7 @@ import { getAppointmentsForDay } from '../helpers/selectors';
 import 'components/Application.scss';
 
 const INITIAL_DATA = {
-  day: null,
+  day: 'Monday',
   days: [],
   appointments: {},
 };
@@ -19,21 +19,12 @@ export default function Application(props) {
   const { day, days } = interviewData;
 
   useEffect(() => {
-    axios
-      .get('/api/days')
-      .then(res => {
-        console.log(res.data); // array
-        setInterviewData(prevState => ({ ...prevState, days: res.data }));
-      })
-      .catch(err => console.log(err));
-
-    axios
-      .get('/api/appointments')
-      .then(res => {
-        console.log(res.data); //object
+    Promise.all([axios.get('/api/days'), axios.get('/api/appointments')])
+      .then(([days, appointments]) => {
         setInterviewData(prevState => ({
           ...prevState,
-          appointments: res.data,
+          days: days.data,
+          appointments: appointments.data,
         }));
       })
       .catch(err => console.log(err));
