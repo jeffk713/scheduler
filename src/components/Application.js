@@ -4,19 +4,26 @@ import axios from 'axios';
 import DayList from 'components/DayList/DayList';
 import Appointment from './Appointment';
 
+import { getAppointmentsForDay } from '../helpers/selectors';
+
 import 'components/Application.scss';
 
+const INITIAL_DATA = {
+  day: null,
+  days: [],
+  appointments: {},
+};
+
 export default function Application(props) {
-  const [day, setDay] = useState('Monday');
-  const [days, setDays] = useState([]);
-  const [appointments, setAppointments] = useState([]);
+  const [interviewData, setInterviewData] = useState(INITIAL_DATA);
+  const { day, days } = interviewData;
 
   useEffect(() => {
     axios
       .get('/api/days')
       .then(res => {
         console.log(res.data); // array
-        setDays(res.data);
+        setInterviewData(prevState => ({ ...prevState, days: res.data }));
       })
       .catch(err => console.log(err));
 
@@ -24,7 +31,10 @@ export default function Application(props) {
       .get('/api/appointments')
       .then(res => {
         console.log(res.data); //object
-        setAppointments(Object.values(res.data));
+        setInterviewData(prevState => ({
+          ...prevState,
+          appointments: res.data,
+        }));
       })
       .catch(err => console.log(err));
   }, []);
@@ -39,7 +49,7 @@ export default function Application(props) {
         />
         <hr className='sidebar__separator sidebar--centered' />
         <nav className='sidebar__menu'>
-          <DayList days={days} value={day} onChange={setDay} />
+          <DayList days={days} value={day} onChange={setInterviewData} />
         </nav>
         <img
           className='sidebar__lhl sidebar--centered'
@@ -48,7 +58,7 @@ export default function Application(props) {
         />
       </section>
       <section className='schedule'>
-        {appointments.map(appointment => (
+        {getAppointmentsForDay(interviewData, day).map(appointment => (
           <Appointment key={appointment.id} {...appointment} />
         ))}
       </section>

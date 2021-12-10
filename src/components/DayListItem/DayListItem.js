@@ -20,7 +20,9 @@ export default function DayListItem(props) {
         { 'day-list__item--selected': props.selected },
         { 'day-list__item--full': props.spots === 0 }
       )}
-      onClick={() => props.setDay(props.name)}
+      onClick={() =>
+        props.setInterviewData(prevState => ({ ...prevState, day: props.name }))
+      }
     >
       <h2 className='text--regular'>{props.name}</h2>
       <h3 className='text--light'>{formatSpots(props.spots)}</h3>
