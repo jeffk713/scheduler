@@ -30,6 +30,8 @@ export default function Application(props) {
       .catch(err => console.log(err));
   }, []);
 
+  const dailyAppointments = getAppointmentsForDay(interviewData, day);
+
   return (
     <main className='layout'>
       <section className='sidebar'>
@@ -49,7 +51,7 @@ export default function Application(props) {
         />
       </section>
       <section className='schedule'>
-        {getAppointmentsForDay(interviewData, day).map(appointment => (
+        {dailyAppointments.map(appointment => (
           <Appointment key={appointment.id} {...appointment} />
         ))}
       </section>
