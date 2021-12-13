@@ -4,33 +4,51 @@ import axios from 'axios';
 import DayList from 'components/DayList/DayList';
 import Appointment from './Appointment';
 
-import { getAppointmentsForDay } from '../helpers/selectors';
+import { getAppointmentsForDay, getInterview } from '../helpers/selectors';
 
 import 'components/Application.scss';
 
-const INITIAL_DATA = {
-  day: 'Monday',
-  days: [],
-  appointments: {},
-};
-
 export default function Application(props) {
+  const INITIAL_DATA = {
+    day: 'Monday',
+    days: [],
+    appointments: {},
+    interviewers: {},
+  };
   const [interviewData, setInterviewData] = useState(INITIAL_DATA);
   const { day, days } = interviewData;
 
   useEffect(() => {
-    Promise.all([axios.get('/api/days'), axios.get('/api/appointments')])
-      .then(([days, appointments]) => {
+    Promise.all([
+      axios.get('/api/days'),
+      axios.get('/api/appointments'),
+      axios.get('/api/interviewers'),
+    ])
+      .then(([daysData, appointmentsData, interviewersData]) => {
         setInterviewData(prevState => ({
           ...prevState,
-          days: days.data,
-          appointments: appointments.data,
+          days: daysData.data,
+          appointments: appointmentsData.data,
+          interviewers: interviewersData.data,
         }));
       })
       .catch(err => console.log(err));
   }, []);
 
   const dailyAppointments = getAppointmentsForDay(interviewData, day);
+
+  const dailySchedule = dailyAppointments.map(appointment => {
+    const interview = getInterview(interviewData, appointment.interview);
+
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+      />
+    );
+  });
 
   return (
     <main className='layout'>
@@ -50,11 +68,7 @@ export default function Application(props) {
           alt='Lighthouse Labs'
         />
       </section>
-      <section className='schedule'>
-        {dailyAppointments.map(appointment => (
-          <Appointment key={appointment.id} {...appointment} />
-        ))}
-      </section>
+      <section className='schedule'>{dailySchedule}</section>
     </main>
   );
 }
