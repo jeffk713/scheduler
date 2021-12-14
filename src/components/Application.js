@@ -4,13 +4,17 @@ import axios from 'axios';
 import DayList from 'components/DayList/DayList';
 import Appointment from './Appointment';
 
-import { getAppointmentsForDay, getInterview } from '../helpers/selectors';
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay,
+} from '../helpers/selectors';
 
 import 'components/Application.scss';
 
 export default function Application(props) {
   const INITIAL_DATA = {
-    day: 'Monday',
+    day: '',
     days: [],
     appointments: {},
     interviewers: {},
@@ -35,7 +39,52 @@ export default function Application(props) {
       .catch(err => console.log(err));
   }, []);
 
+  const bookInterview = (id, interview) => {
+    // set updated appointment
+    const updatedAppointment = {
+      ...interviewData.appointments[id],
+      interview,
+    };
+    // update appointmentsn of interviewData with updatedAppointment
+    const updatedAppointments = {
+      ...interviewData,
+      appointments: {
+        ...interviewData.appointments,
+        [id]: updatedAppointment,
+      },
+    };
+
+    // update database with updated appointment
+    return axios
+      .put(`/api/appointments/${id}`, updatedAppointment)
+      .then(() => setInterviewData(updatedAppointments))
+      .catch(err => console.log(err));
+  };
+
+  const cancelInterview = id => {
+    // set updated appointment
+    const updatedAppointment = {
+      ...interviewData.appointments[id],
+      interview: null,
+    };
+    // update appointmentsn of interviewData with updatedAppointment
+    const updatedAppointments = {
+      ...interviewData,
+      appointments: {
+        ...interviewData.appointments,
+        [id]: updatedAppointment,
+      },
+    };
+
+    // update database with updated appointment
+    return axios
+      .put(`/api/appointments/${id}`, updatedAppointment)
+      .then(() => setInterviewData(updatedAppointments))
+      .catch(err => console.log(err));
+  };
+
   const dailyAppointments = getAppointmentsForDay(interviewData, day);
+  const dailyInterviewers = getInterviewersForDay(interviewData, day);
 
   const dailySchedule = dailyAppointments.map(appointment => {
     const interview = getInterview(interviewData, appointment.interview);
@@ -46,6 +95,9 @@ export default function Application(props) {
         id={appointment.id}
         time={appointment.time}
         interview={interview}
+        interviewers={dailyInterviewers}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });

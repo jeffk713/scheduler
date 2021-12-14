@@ -1,6 +1,6 @@
-export const getAppointmentsForDay = (state, name) => {
+export const getAppointmentsForDay = (state, dayName) => {
   //find the index for the day
-  const indexForDay = state.days.findIndex(day => day.name === name);
+  const indexForDay = state.days.findIndex(day => day.name === dayName);
   //if no index, return []
   if (indexForDay === -1) return [];
 
@@ -22,9 +22,9 @@ export const getInterview = (state, interview) => {
   };
 };
 
-export const getInterviewersForDay = (state, name) => {
+export const getInterviewersForDay = (state, dayName) => {
   //find the index for the day
-  const indexForDay = state.days.findIndex(day => day.name === name);
+  const indexForDay = state.days.findIndex(day => day.name === dayName);
   //if no index, return []
   if (indexForDay === -1) return [];
 
