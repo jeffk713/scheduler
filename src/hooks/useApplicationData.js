@@ -40,15 +40,12 @@ export default INITIAL_DATA => {
       },
     };
     // update database with updated appointment
-    return axios
-      .put(`/api/appointments/${id}`, updatedAppointment)
-      .then(() => setInterviewData(updatedInterviewData))
-      .then(() =>
-        setInterviewData({
-          ...updatedInterviewData,
-          days: getDaysWithRemainingSpots(updatedInterviewData, day),
-        })
-      );
+    return axios.put(`/api/appointments/${id}`, updatedAppointment).then(() =>
+      setInterviewData({
+        ...updatedInterviewData,
+        days: getDaysWithRemainingSpots(updatedInterviewData, day),
+      })
+    );
   };
 
   const cancelInterview = id => {
@@ -67,15 +64,12 @@ export default INITIAL_DATA => {
     };
 
     // update database with updated appointment
-    return axios
-      .delete(`/api/appointments/${id}`)
-      .then(() => setInterviewData(updatedInterviewData))
-      .then(() =>
-        setInterviewData({
-          ...updatedInterviewData,
-          days: getDaysWithRemainingSpots(updatedInterviewData, day),
-        })
-      );
+    return axios.delete(`/api/appointments/${id}`).then(() =>
+      setInterviewData({
+        ...updatedInterviewData,
+        days: getDaysWithRemainingSpots(updatedInterviewData, day),
+      })
+    );
   };
 
   return { interviewData, setInterviewData, bookInterview, cancelInterview };
