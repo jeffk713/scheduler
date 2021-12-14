@@ -15,7 +15,6 @@ const INITIAL_DATA = {
 };
 
 const reducer = (state = INITIAL_DATA, action) => {
-  console.log('what action fired? --', action);
   switch (action.type) {
     case interviewDataActionTypes.SET_INTERVIEW_DATA:
       return {
