@@ -11,7 +11,7 @@ const DayList = props => {
           name={day.name}
           spots={day.spots}
           selected={day.name === props.value}
-          setInterviewData={props.onChange}
+          changeDayName={props.onChange}
         />
       ))}
     </ul>

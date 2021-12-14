@@ -12,16 +12,9 @@ import {
 
 import 'components/Application.scss';
 
-const INITIAL_DATA = {
-  day: 'Monday',
-  days: [],
-  appointments: {},
-  interviewers: {},
-};
-
 export default function Application(props) {
-  const { interviewData, setInterviewData, bookInterview, cancelInterview } =
-    useApplicationData(INITIAL_DATA);
+  const { interviewData, changeDayName, bookInterview, cancelInterview } =
+    useApplicationData();
   const { day, days } = interviewData;
 
   const dailyAppointments = getAppointmentsForDay(interviewData, day);
@@ -53,7 +46,7 @@ export default function Application(props) {
         />
         <hr className='sidebar__separator sidebar--centered' />
         <nav className='sidebar__menu'>
-          <DayList days={days} value={day} onChange={setInterviewData} />
+          <DayList days={days} value={day} onChange={changeDayName} />
         </nav>
         <img
           className='sidebar__lhl sidebar--centered'
