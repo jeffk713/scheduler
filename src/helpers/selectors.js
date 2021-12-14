@@ -34,3 +34,12 @@ export const getInterviewersForDay = (state, dayName) => {
   //return an array of appointment for the day
   return dayInterviewerKeyArr.map(key => state.interviewers[key]);
 };
+
+export const getNumOfRemainingSpotsForDay = (state, dayName) => {
+  //get appointments for day
+  const appsForDayArr = getAppointmentsForDay(state, dayName);
+
+  const appsForDayNoInterviewArr = appsForDayArr.filter(app => !app.interview);
+
+  return appsForDayNoInterviewArr.length;
+};
