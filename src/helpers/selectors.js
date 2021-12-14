@@ -35,11 +35,20 @@ export const getInterviewersForDay = (state, dayName) => {
   return dayInterviewerKeyArr.map(key => state.interviewers[key]);
 };
 
-export const getNumOfRemainingSpotsForDay = (state, dayName) => {
-  //get appointments for day
+// helper for getDaysWithRemainingSpots
+const getNumOfRemainingSpotsForDay = (state, dayName) => {
   const appsForDayArr = getAppointmentsForDay(state, dayName);
+  const noInterviewAppsForDayArr = appsForDayArr.filter(app => !app.interview);
+  return noInterviewAppsForDayArr.length;
+};
 
-  const appsForDayNoInterviewArr = appsForDayArr.filter(app => !app.interview);
-
-  return appsForDayNoInterviewArr.length;
+export const getDaysWithRemainingSpots = (state, dayName) => {
+  // return updated days array
+  return state.days.map(day => {
+    if (day.name === dayName) {
+      // only update num of remaining spots for applicable day only.
+      day.spots = getNumOfRemainingSpotsForDay(state, dayName);
+    }
+    return day;
+  });
 };

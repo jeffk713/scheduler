@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 
+import { getDaysWithRemainingSpots } from 'helpers/selectors';
+
 import axios from 'axios';
 
 export default INITIAL_DATA => {
   const [interviewData, setInterviewData] = useState(INITIAL_DATA);
+  const { day } = interviewData;
 
   useEffect(() => {
     Promise.all([
@@ -28,19 +31,24 @@ export default INITIAL_DATA => {
       ...interviewData.appointments[id],
       interview,
     };
-    // update appointmentsn of interviewData with updatedAppointment
-    const updatedAppointments = {
+    // update interviewData with updated days array and updated appointments array
+    const updatedInterviewData = {
       ...interviewData,
       appointments: {
         ...interviewData.appointments,
         [id]: updatedAppointment,
       },
     };
-
     // update database with updated appointment
     return axios
       .put(`/api/appointments/${id}`, updatedAppointment)
-      .then(() => setInterviewData(updatedAppointments))
+      .then(() => setInterviewData(updatedInterviewData))
+      .then(() =>
+        setInterviewData({
+          ...updatedInterviewData,
+          days: getDaysWithRemainingSpots(updatedInterviewData, day),
+        })
+      );
   };
 
   const cancelInterview = id => {
@@ -49,8 +57,8 @@ export default INITIAL_DATA => {
       ...interviewData.appointments[id],
       interview: null,
     };
-    // update appointmentsn of interviewData with updatedAppointment
-    const updatedAppointments = {
+    // update interviewData with updated days array and updated appointments array
+    const updatedInterviewData = {
       ...interviewData,
       appointments: {
         ...interviewData.appointments,
@@ -61,7 +69,13 @@ export default INITIAL_DATA => {
     // update database with updated appointment
     return axios
       .delete(`/api/appointments/${id}`)
-      .then(() => setInterviewData(updatedAppointments));
+      .then(() => setInterviewData(updatedInterviewData))
+      .then(() =>
+        setInterviewData({
+          ...updatedInterviewData,
+          days: getDaysWithRemainingSpots(updatedInterviewData, day),
+        })
+      );
   };
 
   return { interviewData, setInterviewData, bookInterview, cancelInterview };
