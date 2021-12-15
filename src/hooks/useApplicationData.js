@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 
 import { getDaysWithRemainingSpots } from 'helpers/selectors';
 
@@ -35,10 +35,14 @@ const reducer = (state = INITIAL_DATA, action) => {
 };
 
 const useApplicationData = () => {
+  console.log('HOOK RENDERRRRRR');
   const [interviewData, dispatch] = useReducer(reducer, INITIAL_DATA);
   const { day } = interviewData;
 
+  const dayRef = useRef('Monday');
+
   useEffect(() => {
+    console.log('HOOK RENDERRRRRR FROM USEEFFECT');
     const getLatestDataFromServer = () =>
       Promise.all([
         axios.get('/api/days'),
@@ -47,7 +51,7 @@ const useApplicationData = () => {
       ])
         .then(([daysData, appointmentsData, interviewersData]) => {
           const interviewDataObj = {
-            ...interviewData,
+            day: dayRef.current,
             days: daysData.data,
             appointments: appointmentsData.data,
             interviewers: interviewersData.data,
@@ -80,7 +84,10 @@ const useApplicationData = () => {
     // ======================================================
   }, []);
 
-  const changeDayName = dayName => dispatch(setDayName(dayName));
+  const changeDayName = dayName => {
+    dayRef.current = dayName;
+    dispatch(setDayName(dayName));
+  };
 
   const bookInterview = (id, interview) => {
     // set updated appointment

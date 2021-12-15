@@ -13,6 +13,7 @@ import {
 import 'components/Application.scss';
 
 export default function Application(props) {
+  console.log('APPLICATION RENDERRRRR')
   const { interviewData, changeDayName, bookInterview, cancelInterview } =
     useApplicationData();
   const { day, days } = interviewData;

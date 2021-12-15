@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Header from './Header';
 import Show from './Show';
@@ -24,6 +24,15 @@ const Appointment = props => {
   const { mode, back, transition } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
+
+  useEffect(() => {
+    if (mode === EMPTY && props.interview) {
+      transition(SHOW);
+    }
+    if (mode === SHOW && !props.interview) {
+      transition(EMPTY);
+    }
+  }, [props.interview]);
 
   const saveInterview = (name, interviewer) => {
     // set saving mode
@@ -56,8 +65,7 @@ const Appointment = props => {
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SHOW && (
         <Show
-          student={props.interview.student}
-          interviewer={props.interview.interviewer}
+          interview={props.interview}
           onDelete={() => transition(CONFIRM)}
           onEdit={() => transition(EDIT)}
         />
