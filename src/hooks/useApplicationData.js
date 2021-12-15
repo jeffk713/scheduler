@@ -7,6 +7,9 @@ import { setDayName, setInterviewData } from './interviewData.actions';
 
 import axios from 'axios';
 
+// LISTEN TO SERVER WEB SOCKET
+const client = new WebSocket('ws://localhost:8001');
+
 const INITIAL_DATA = {
   day: 'Monday',
   days: [],
@@ -36,21 +39,45 @@ const useApplicationData = () => {
   const { day } = interviewData;
 
   useEffect(() => {
-    Promise.all([
-      axios.get('/api/days'),
-      axios.get('/api/appointments'),
-      axios.get('/api/interviewers'),
-    ])
-      .then(([daysData, appointmentsData, interviewersData]) => {
-        const interviewDataObj = {
-          ...interviewData,
-          days: daysData.data,
-          appointments: appointmentsData.data,
-          interviewers: interviewersData.data,
-        };
-        dispatch(setInterviewData(interviewDataObj));
-      })
-      .catch(err => console.log(err));
+    const getLatestDataFromServer = () =>
+      Promise.all([
+        axios.get('/api/days'),
+        axios.get('/api/appointments'),
+        axios.get('/api/interviewers'),
+      ])
+        .then(([daysData, appointmentsData, interviewersData]) => {
+          const interviewDataObj = {
+            ...interviewData,
+            days: daysData.data,
+            appointments: appointmentsData.data,
+            interviewers: interviewersData.data,
+          };
+          dispatch(setInterviewData(interviewDataObj));
+        })
+        .catch(err => console.log(err));
+
+    // fetch data upon first render of App
+    getLatestDataFromServer();
+
+    // PRACTICE WEB SOCKET ==================================
+    client.addEventListener('open', event => {
+      const pingMsg = 'ping';
+      client.send('Hello Server!');
+      client.send(pingMsg);
+      console.log('Message to server: ', pingMsg);
+    });
+    // =======================================================
+
+    // LISTEN FOR 'SET_INTERVIEW' ============================
+    client.addEventListener('message', event => {
+      const parsedData = JSON.parse(event.data);
+      console.log('Message from server: ', parsedData);
+
+      if (parsedData.type === 'SET_INTERVIEW') {
+        getLatestDataFromServer();
+      }
+    });
+    // ======================================================
   }, []);
 
   const changeDayName = dayName => dispatch(setDayName(dayName));
