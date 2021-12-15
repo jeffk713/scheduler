@@ -11,7 +11,7 @@ import axios from 'axios';
 const client = new WebSocket('ws://localhost:8001');
 
 const INITIAL_DATA = {
-  day: 'Monday',
+  day: '',
   days: [],
   appointments: {},
   interviewers: {},
@@ -35,14 +35,13 @@ const reducer = (state = INITIAL_DATA, action) => {
 };
 
 const useApplicationData = () => {
-  console.log('HOOK RENDERRRRRR');
   const [interviewData, dispatch] = useReducer(reducer, INITIAL_DATA);
   const { day } = interviewData;
 
+  // initiate useRef with initial day of Monday
   const dayRef = useRef('Monday');
 
   useEffect(() => {
-    console.log('HOOK RENDERRRRRR FROM USEEFFECT');
     const getLatestDataFromServer = () =>
       Promise.all([
         axios.get('/api/days'),
@@ -51,7 +50,7 @@ const useApplicationData = () => {
       ])
         .then(([daysData, appointmentsData, interviewersData]) => {
           const interviewDataObj = {
-            day: dayRef.current,
+            day: dayRef.current, // to stay in the same day as before state update
             days: daysData.data,
             appointments: appointmentsData.data,
             interviewers: interviewersData.data,
@@ -85,6 +84,7 @@ const useApplicationData = () => {
   }, []);
 
   const changeDayName = dayName => {
+    // store the day in useRef
     dayRef.current = dayName;
     dispatch(setDayName(dayName));
   };
