@@ -32,7 +32,7 @@ const Appointment = props => {
     if (mode === SHOW && !props.interview) {
       transition(EMPTY);
     }
-  }, [props.interview]);
+  }, [props.interview, transition, mode]);
 
   const saveInterview = (name, interviewer) => {
     // set saving mode

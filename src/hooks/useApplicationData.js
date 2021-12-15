@@ -67,14 +67,14 @@ const useApplicationData = () => {
       const pingMsg = 'ping';
       client.send('Hello Server!');
       client.send(pingMsg);
-      console.log('Message to server: ', pingMsg);
+      // console.log('Message to server: ', pingMsg);
     });
     // =======================================================
 
     // LISTEN FOR 'SET_INTERVIEW' ============================
     client.addEventListener('message', event => {
       const parsedData = JSON.parse(event.data);
-      console.log('Message from server: ', parsedData);
+      // console.log('Message from server: ', parsedData);
 
       if (parsedData.type === 'SET_INTERVIEW') {
         getLatestDataFromServer();
@@ -86,6 +86,7 @@ const useApplicationData = () => {
   const changeDayName = dayName => {
     // store the day in useRef
     dayRef.current = dayName;
+
     dispatch(setDayName(dayName));
   };
 
