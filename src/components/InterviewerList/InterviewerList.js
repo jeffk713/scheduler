@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import InterviewerListItem from 'components/InterviewerListItem/InterviewerListItem';
 
 import './InterviewerList.scss';
-//
+
 const InterviewerList = ({ interviewers, value, onChange }) => {
   return (
     <section className='interviewers'>
@@ -26,7 +26,7 @@ const InterviewerList = ({ interviewers, value, onChange }) => {
 
 InterviewerList.propTypes = {
   interviewers: PropTypes.array.isRequired,
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number,
 };
 
 export default InterviewerList;
