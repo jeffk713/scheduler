@@ -6,7 +6,6 @@
   "dependencies": {
     "axios": "^0.24.0",
     "classnames": "^2.2.6",
-    "node-sass": "^7.0.0",
     "normalize.css": "^8.0.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -46,7 +45,8 @@
     "babel-loader": "^8.0.5",
     "cypress": "^9.1.1",
     "prop-types": "^15.7.2",
-    "react-test-renderer": "^16.9.0"
+    "react-test-renderer": "^16.9.0",
+    "sass": "^1.45.0"
   },
   "jest": {
     "watchPathIgnorePatterns": [
