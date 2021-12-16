@@ -9,7 +9,8 @@
 
 ## General info
 
-- Web app scheduler where you can manage interviews
+- Web app scheduler where multi users can manage interviews
+- Deployed via Netlify: https://hungry-engelbart-176691.netlify.app/
 
 ## Sample images
 
