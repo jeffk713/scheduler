@@ -34,20 +34,20 @@ const Appointment = props => {
     }
   }, [props.interview, transition, mode]);
 
-  // const saveInterview = (name, interviewer) => {
-  //   // set saving mode
-  //   transition(SAVING);
+  const saveInterview = (name, interviewer) => {
+    // set saving mode
+    transition(SAVING);
 
-  //   const interview = {
-  //     student: name,
-  //     interviewer,
-  //   };
+    const interview = {
+      student: name,
+      interviewer,
+    };
 
-  //   props
-  //     .bookInterview(props.id, interview)
-  //     .then(() => transition(SHOW))
-  //     .catch(() => transition(ERROR_SAVE, true));
-  // };
+    props
+      .bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(() => transition(ERROR_SAVE, true));
+  };
 
   const deleteInterview = id => {
     //set deleting mode

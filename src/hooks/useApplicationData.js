@@ -24,11 +24,11 @@ const reducer = (state = INITIAL_DATA, action) => {
         ...state,
         ...action.payload,
       };
-    case interviewDataActionTypes.SET_DAY_NAME:
-      return {
-        ...state,
-        day: action.payload,
-      };
+    // case interviewDataActionTypes.SET_DAY_NAME:
+    //   return {
+    //     ...state,
+    //     day: action.payload,
+    //   };
     default:
       return state;
   }
