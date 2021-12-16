@@ -14,13 +14,13 @@ export default initialMode => {
   };
 
   //change mode
-  // const transition = (newMode, replace) => {
-  //   if (replace) {
-  //     back();
-  //   }
-  //   //add an item to hisotry and set
-  //   setHistory(prev => [...prev, newMode]);
-  // };
+  const transition = (newMode, replace) => {
+    if (replace) {
+      back();
+    }
+    //add an item to hisotry and set
+    setHistory(prev => [...prev, newMode]);
+  };
 
   const mode = history[history.length - 1];
 
