@@ -6,6 +6,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "classnames": "^2.2.6",
+    "node-sass": "^7.0.0",
     "normalize.css": "^8.0.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -44,7 +45,6 @@
     "@testing-library/react-hooks": "^7.0.2",
     "babel-loader": "^8.0.5",
     "cypress": "^9.1.1",
-    "node-sass": "^4.14.0",
     "prop-types": "^15.7.2",
     "react-test-renderer": "^16.9.0"
   },

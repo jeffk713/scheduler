@@ -8,7 +8,11 @@ import { setDayName, setInterviewData } from './interviewData.actions';
 import axios from 'axios';
 
 // LISTEN TO SERVER WEB SOCKET
-const client = new WebSocket('ws://localhost:8001');
+
+const wssProto = process.env.REACT_APP_WEBSOCKET_URL
+  ? process.env.REACT_APP_WEBSOCKET_URL
+  : 'ws://localhost:8001';
+const client = new WebSocket(wssProto);
 
 const INITIAL_DATA = {
   day: '',
