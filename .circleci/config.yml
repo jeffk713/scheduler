@@ -43,6 +43,13 @@ workflows:
           filters:
             branches:
               ignore: production
+      - hold:
+          type: approval
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: production
       - deploy:
           filters:
             branches:
