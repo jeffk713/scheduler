@@ -85,6 +85,11 @@ const useApplicationData = () => {
       }
     });
     // ======================================================
+
+    // clean up
+    return () => {
+      client.close();
+    };
   }, []);
 
   const changeDayName = dayName => {
