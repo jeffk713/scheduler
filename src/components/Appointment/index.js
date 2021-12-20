@@ -73,7 +73,7 @@ const Appointment = props => {
       {mode === CREATE && (
         <Form
           interviewers={props.interviewers}
-          onCancel={() => back()}
+          onCancel={back}
           onSave={saveInterview}
         />
       )}
@@ -82,7 +82,7 @@ const Appointment = props => {
       {mode === CONFIRM && (
         <Confirm
           message='Are you sure to delete?'
-          onCancel={() => back()}
+          onCancel={back}
           onConfirm={() => deleteInterview(props.id)}
         />
       )}
@@ -96,10 +96,16 @@ const Appointment = props => {
         />
       )}
       {mode === ERROR_SAVE && (
-        <Error onClose={back} message={'Could not update appointment.'} />
+        <Error
+          onClose={() => transition(SHOW, true)}
+          message={'Could not update appointment.'}
+        />
       )}
       {mode === ERROR_DELETE && (
-        <Error onClose={back} message={'Could not delete appointment.'} />
+        <Error
+          onClose={() => transition(SHOW, true)}
+          message={'Could not delete appointment.'}
+        />
       )}
     </article>
   );

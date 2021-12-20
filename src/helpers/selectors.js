@@ -12,9 +12,7 @@ export const getAppointmentsForDay = (state, dayName) => {
 };
 
 export const getInterview = (state, interview) => {
-  if (!interview) {
-    return null;
-  }
+  if (!interview) return null;
 
   return {
     ...interview,
